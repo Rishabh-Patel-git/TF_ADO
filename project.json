@@ -28,8 +28,8 @@
       "docker_hub_email": "test@gmail.com",
       "docker_hub_password": "some hashed password",
       "docker_hub_username": "test_name_name",
-      "developers": ["Water Project - Developers"],
-      "managers": ["Water Project - Manager"]
+      "developers": ["Air team - Developers"],
+      "managers": ["Air team - manager"]
     }
   ]
 }

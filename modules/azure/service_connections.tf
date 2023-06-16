@@ -6,7 +6,7 @@ resource "azuredevops_serviceendpoint_jfrog_artifactory_v2" "artifactory_service
   description           = "Artifactory service created with terraform"
   url                   = var.project_config.artifactory_url
   authentication_token {
-    token = var.artifactory_token
+    token = var.project_config.artifactory_token
   }
 }
 

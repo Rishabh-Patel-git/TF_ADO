@@ -12,8 +12,8 @@ resource "azuredevops_agent_pool" "tf_self_pool" {
 
 # Creating multiple projects
 module "azure_projects" {
-  source = "./modules/azure"
-  count  = length(local.parsed_json_config.projects)
+  source         = "./modules/azure"
+  count          = length(local.parsed_json_config.projects)
   project_config = local.parsed_json_config.projects[count.index]
-  agent_pool_id = azuredevops_agent_pool.tf_self_pool.id
+  agent_pool_id  = azuredevops_agent_pool.tf_self_pool.id
 }
