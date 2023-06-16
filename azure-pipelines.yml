@@ -5,7 +5,7 @@
 # https://aka.ms/yaml
 
 trigger:
-- main
+- none
 
 pool:
   vmImage: ubuntu-latest
@@ -35,7 +35,7 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'plan'
-              commandOptions: '-out="plan.out"'
+              commandOptions: '-out="plan.out" -lock=false'
               environmentServiceNameAzureRM: 'azure_service'
           - task: CopyFiles@2
             inputs:
