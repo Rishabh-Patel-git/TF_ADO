@@ -1,4 +1,5 @@
 # Starter pipeline
+
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
@@ -18,5 +19,14 @@ stages:
           - task: TerraformInstaller@1
             inputs:
               terraformVersion: '1.3.9'
+          - task: TerraformTaskV4@4
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              backendServiceArm: 'azure_service'
+              backendAzureRmResourceGroupName: 'rishabhpatel'
+              backendAzureRmStorageAccountName: 'tfstorageaccount12'
+              backendAzureRmContainerName: 'tf-container'
+              backendAzureRmKey: 'terraform.tfstate'
           
    
