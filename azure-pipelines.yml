@@ -65,7 +65,7 @@ stages:
                   inputs:
                     provider: 'azurerm'
                     command: 'init'
-                    workingDirectory: '$(Pipeline.Workspace)'
+                    workingDirectory: '$(Pipeline.Workspace)/drop'
                     backendServiceArm: 'azure_service'
                     backendAzureRmResourceGroupName: 'rishabhpatel'
                     backendAzureRmStorageAccountName: 'tfstorageaccount12'
