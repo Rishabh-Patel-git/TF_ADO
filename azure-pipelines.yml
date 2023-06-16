@@ -39,12 +39,12 @@ stages:
               environmentServiceNameAzureRM: 'azure_service'
           - task: CopyFiles@2
             inputs:
-              SourceFolder: '${System.DefaultWorkingDirectory}'
+              SourceFolder: '$(system.defaultworkingdirectory)'
               Contents: 'plan.out'
-              TargetFolder: '${Build.ArtifactStagingDirectory}'
+              TargetFolder: '$(build.artifactstagingdirectory)'
           - task: PublishBuildArtifacts@1
             inputs:
-              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              PathtoPublish: $(build.artifactstagingdirectory)'
               ArtifactName: 'drop'
               publishLocation: 'Container'
           
