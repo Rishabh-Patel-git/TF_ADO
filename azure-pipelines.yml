@@ -49,6 +49,7 @@ stages:
               publishLocation: 'Container'
   - stage: Deploying
     displayName: Applying
+    dependsOn: Plan
     jobs:
       - deployment: Deploy
         environment: dev
