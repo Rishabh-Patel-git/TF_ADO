@@ -40,13 +40,40 @@ stages:
           - task: CopyFiles@2
             inputs:
               SourceFolder: '$(system.defaultworkingdirectory)'
-              Contents: 'plan.out'
+              Contents: '**'
               TargetFolder: '$(build.artifactstagingdirectory)'
           - task: PublishBuildArtifacts@1
             inputs:
               PathtoPublish: '$(Build.ArtifactStagingDirectory)'
               ArtifactName: 'drop'
               publishLocation: 'Container'
+  - stage: Deploying
+    displayName: Applying
+    jobs:
+      - deployment: Deploy
+        environment: dev
+        strategy:
+            runOnce:
+              deploy:
+                steps:
+                - task: DownloadBuildArtifacts@0
+                  displayName: 'Download Artifacts'
+                  inputs:
+                    buildType: current
+                    downloadType: single
+                    artifactName: drop
+                    downloadPath: '$(System.ArtifactsDirectory)'
+                - task: TerraformTaskV4@4
+                  inputs:
+                    provider: 'azurerm'
+                    command: 'apply'
+                    workingDirectory: '$(System.ArtifactsDirectory)/drop'
+                    commandOptions: '"plan.out"'
+                    environmentServiceNameAzureRM: 'azure_service'
+                
+                
+                
+                
           
           
    
