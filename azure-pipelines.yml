@@ -66,6 +66,7 @@ stages:
                     provider: 'azurerm'
                     command: 'init'
                     workingDirectory: '/home/vsts/work/1/drop/'
+                    commandOptions: '-upgrade'
                     backendServiceArm: 'azure_service'
                     backendAzureRmResourceGroupName: 'rishabhpatel'
                     backendAzureRmStorageAccountName: 'tfstorageaccount12'
