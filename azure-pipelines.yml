@@ -68,6 +68,17 @@ stages:
                     artifactName: drop
                     downloadPath: '$(System.ArtifactsDirectory)'
                 - task: TerraformTaskV4@4
+                  displayName: Terraform init command
+                  inputs:
+                    provider: 'azurerm'
+                    command: 'init'
+                    workingDirectory: '$(System.ArtifactsDirectory)'
+                    backendServiceArm: 'azure_service'
+                    backendAzureRmResourceGroupName: 'rishabhpatel'
+                    backendAzureRmStorageAccountName: 'tfstorageaccount12'
+                    backendAzureRmContainerName: 'tf-container'
+                    backendAzureRmKey: 'terraform.tfstate'
+                - task: TerraformTaskV4@4
                   inputs:
                     provider: 'azurerm'
                     command: 'apply'
