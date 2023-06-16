@@ -62,7 +62,7 @@ stages:
                     terraformVersion: '1.3.9'
                 - task: CopyFiles@2
                   inputs:
-                    SourceFolder: '${Pipeline.Workspace}/drop'
+                    SourceFolder: '$(Pipeline.Workspace)/drop'
                     Contents: '**'
                     TargetFolder: '$(System.ArtifactsDirectory)'
                 - task: TerraformTaskV4@4
