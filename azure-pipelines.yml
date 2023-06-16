@@ -65,7 +65,7 @@ stages:
                   inputs:
                     provider: 'azurerm'
                     command: 'init'
-                    workingDirectory: '$(Pipeline.Workspace)/drop'
+                    workingDirectory: '/home/vsts/work/1/drop/'
                     backendServiceArm: 'azure_service'
                     backendAzureRmResourceGroupName: 'rishabhpatel'
                     backendAzureRmStorageAccountName: 'tfstorageaccount12'
@@ -75,7 +75,7 @@ stages:
                   inputs:
                     provider: 'azurerm'
                     command: 'apply'
-                    workingDirectory: '$(Pipeline.Workspace)/drop'
+                    workingDirectory: '/home/vsts/work/1/drop/'
                     commandOptions: '"plan.out"'
                     environmentServiceNameAzureRM: 'azure_service'
                 
