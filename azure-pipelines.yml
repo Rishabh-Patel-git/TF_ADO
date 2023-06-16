@@ -82,7 +82,7 @@ stages:
                     provider: 'azurerm'
                     command: 'apply'
                     workingDirectory: '$(System.ArtifactsDirectory)'
-                    commandOptions: '"plan.out"'
+                    commandOptions: '"plan.out" -lock=false'
                     environmentServiceNameAzureRM: 'azure_service'
                 
                 
