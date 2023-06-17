@@ -32,7 +32,6 @@ stages:
               command: 'plan'
               commandOptions: '-out="plan.out"'
               environmentServiceNameAzureRM: 'azure_service'
-          - script: ls -al $(system.defaultworkingdirectory)/.terraform/providers/registry.terraform.io/hashicorp/azuread/2.39.0/linux_amd64/terraform-provider-azuread_v2.39.0_x5
           - task: CopyFiles@2
             inputs:
               SourceFolder: '$(system.defaultworkingdirectory)'
@@ -59,8 +58,6 @@ stages:
             
                 - script: chmod -R +x $(Pipeline.Workspace)/drop/.terraform/providers/registry.terraform.io
                
-
-
                 - task: TerraformTaskV4@4
                   displayName: Terraform init command
                   inputs:
@@ -72,6 +69,7 @@ stages:
                     backendAzureRmStorageAccountName: 'tfstorageaccount12'
                     backendAzureRmContainerName: 'tf-container'
                     backendAzureRmKey: 'pf/terraform.tfstate'
+                  
                 - task: TerraformTaskV4@4
                   inputs:
                     provider: 'azurerm'
