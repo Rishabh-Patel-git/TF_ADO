@@ -61,7 +61,7 @@ stages:
                 - task: TerraformInstaller@1
                   inputs:
                     terraformVersion: '1.3.9'
-                - script: ls -al $(Pipeline.Workspace)/drop
+                - script: chmod +x $(Pipeline.Workspace)/drop
 
                 - task: TerraformTaskV4@4
                   displayName: Terraform init command
