@@ -15,6 +15,20 @@ stages:
             displayName: Installing terraform
             inputs:
               terraformVersion: '1.5.0'
+          - task: DownloadSecureFile@1
+            name: projectJsonFile
+            inputs:
+              secureFile: 'project.json'
+          - task: DownloadSecureFile@1
+            name: variableFile
+            inputs:
+              secureFile: 'terraform.tfvars'
+            
+          - task: CopyFiles@2
+            inputs:
+              SourceFolder: '$(Agent.TempDirectory)'
+              Contents: '**'
+              TargetFolder: '$(system.defaultworkingdirectory)'
           - task: TerraformTaskV4@4
             displayName: Terraform init command
             inputs:
