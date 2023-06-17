@@ -1,0 +1,109 @@
+
+parameters:
+  - name: ProjectJson
+    type: string
+  - name: TerraformVars
+    type: string
+  - name: backendServiceArm
+    type: string
+  - name: backendAzureRmResourceGroupName
+    type: string
+  - name: backendAzureRmStorageAccountName
+    type: string
+  - name: backendAzureRmContainerName
+    type: string
+  - name: backendAzureRmKey
+    type: string
+  - name: environmentServiceNameAzureRM
+    type: string
+  - name: environment
+    type: string
+    
+
+stages:
+  - stage: Plan
+    displayName: Init&Planning
+    jobs:
+      - job: 
+        steps:
+          - task: TerraformInstaller@1
+            displayName: Installing terraform
+            inputs:
+              terraformVersion: '1.5.0'
+          - task: DownloadSecureFile@1
+            name: projectJsonFile
+            inputs:
+              secureFile: ${{ parameters.ProjectJson }}
+          - task: DownloadSecureFile@1
+            name: variableFile
+            inputs:
+              secureFile: ${{ parameters.TerraformVars }}
+            
+          - task: CopyFiles@2
+            inputs:
+              SourceFolder: '$(Agent.TempDirectory)'
+              Contents: |
+                ${{ parameters.ProjectJson }} 
+                ${{ parameters.TerraformVars }}
+              TargetFolder: '$(system.defaultworkingdirectory)'
+          - task: TerraformTaskV4@4
+            displayName: Terraform init command
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              backendServiceArm: ${{ parameters.backendServiceArm }}
+              backendAzureRmResourceGroupName: ${{ parameters.backendAzureRmResourceGroupName }}
+              backendAzureRmStorageAccountName: ${{ parameters.backendAzureRmStorageAccountName }}
+              backendAzureRmContainerName: ${{ parameters.backendAzureRmContainerName }}
+              backendAzureRmKey: ${{ parameters.backendAzureRmKey }}
+          - task: TerraformTaskV4@4
+            displayName: Terraform plan command
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              commandOptions: '-out="plan.out"'
+              environmentServiceNameAzureRM: ${{ parameters.environmentServiceNameAzureRM }}
+          - task: CopyFiles@2
+            inputs:
+              SourceFolder: '$(system.defaultworkingdirectory)'
+              Contents: '**'
+              TargetFolder: '$(build.artifactstagingdirectory)'
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
+  - stage: Deploying
+    displayName: Applying
+    dependsOn: Plan
+    jobs:
+      - deployment: Deploy
+        environment: ${{ parameters.environment }}
+        strategy:
+            runOnce:
+              deploy:
+                steps:
+                - task: TerraformInstaller@1
+                  inputs:
+                    terraformVersion: '1.5.0'
+            
+                - script: chmod -R +x $(Pipeline.Workspace)/drop/.terraform/providers/registry.terraform.io
+               
+                - task: TerraformTaskV4@4
+                  displayName: Terraform init command
+                  inputs:
+                    provider: 'azurerm'
+                    command: 'init'
+                    workingDirectory: '$(Pipeline.Workspace)/drop'
+                    backendServiceArm: ${{ parameters.backendServiceArm }}
+                    backendAzureRmResourceGroupName: ${{ parameters.backendAzureRmResourceGroupName }}
+                    backendAzureRmStorageAccountName: ${{ parameters.backendAzureRmStorageAccountName }}
+                    backendAzureRmContainerName: ${{ parameters.backendAzureRmContainerName }}
+                    backendAzureRmKey: ${{ parameters.backendAzureRmKey }}
+                - task: TerraformTaskV4@4
+                  inputs:
+                    provider: 'azurerm'
+                    command: 'apply'
+                    workingDirectory: '$(Pipeline.Workspace)/drop'
+                    commandOptions: '"plan.out" '
+                    environmentServiceNameAzureRM: ${{ parameters.environmentServiceNameAzureRM }}
