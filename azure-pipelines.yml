@@ -37,6 +37,7 @@ stages:
               command: 'plan'
               commandOptions: '-out="plan.out" -lock=false'
               environmentServiceNameAzureRM: 'azure_service'
+          - script: ls -al
           - task: CopyFiles@2
             inputs:
               SourceFolder: '$(system.defaultworkingdirectory)'
@@ -60,7 +61,12 @@ stages:
                 - task: TerraformInstaller@1
                   inputs:
                     terraformVersion: '1.3.9'
-              
+                - script: |
+                    echo Add other tasks to build, test, and deploy your project.
+                    echo whatever
+                    ls -al
+                  displayName: 'Run a multi-line script'
+
                 - task: TerraformTaskV4@4
                   displayName: Terraform init command
                   inputs:
