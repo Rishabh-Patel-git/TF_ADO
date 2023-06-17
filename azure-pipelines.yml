@@ -57,7 +57,7 @@ stages:
                   inputs:
                     terraformVersion: '1.5.0'
             
-                - script: chmod +x $(Pipeline.Workspace)/drop/*
+                - script: chmod -R +x $(Pipeline.Workspace)/drop/.terraform/providers/registry.terraform.io/hashicorp
                
 
 
