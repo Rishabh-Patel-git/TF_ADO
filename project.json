@@ -1,0 +1,35 @@
+{
+  "projects": [
+    {
+      "project_name": "Water assignment",
+      "repo_name": "Water_Repository",
+      "proj_description": "Created as major assignment using terraform",
+      "emails_patterns": ["*@water.com", "*@nagarro.com"],
+      "sonar_token": "random_value",
+      "sonar_url": "http://random/url?sonar",
+      "artifactory_url": "http://localhost:8082/artifactory",
+      "artifactory_token": "some random token value",
+      "docker_hub_email": "test@gmail.com",
+      "docker_hub_password": "some hashed password",
+      "docker_hub_username": "test_name_name",
+      "developers": ["Water Project - Developers"],
+      "managers": ["Water Project - Manager"]
+    },
+    {
+     
+      "project_name": "Air assignment",
+      "repo_name": "Air_repo",
+      "proj_description": "Created as major assignment using terraform",
+      "emails_patterns": ["*@water.com", "*@nagarro.com"],
+      "sonar_token": "random_value",
+      "sonar_url": "http://random/url?sonar",
+      "artifactory_url": "http://localhost:8082/artifactory",
+      "artifactory_token": "some random token value",
+      "docker_hub_email": "test@gmail.com",
+      "docker_hub_password": "some hashed password",
+      "docker_hub_username": "test_name_name",
+      "developers": ["Air team - Developers"],
+      "managers": ["Air team - manager"]
+    }
+  ]
+}
