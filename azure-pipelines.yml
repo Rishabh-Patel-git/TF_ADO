@@ -1,8 +1,3 @@
-# Starter pipeline
-
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
 
 trigger:
 - none
@@ -19,7 +14,7 @@ stages:
           - task: TerraformInstaller@1
             displayName: Installing terraform
             inputs:
-              terraformVersion: latest
+              terraformVersion: '1.5.0'
           - task: TerraformTaskV4@4
             displayName: Terraform init command
             inputs:
@@ -60,10 +55,10 @@ stages:
                 steps:
                 - task: TerraformInstaller@1
                   inputs:
-                    terraformVersion: latest
-                - script: ls -al $(Pipeline.Workspace)/drop/.terraform/providers/registry.terraform.io/hashicorp/azuread/2.39.0/linux_amd64/terraform-provider-azuread_v2.39.0_x5
-                - script: chmod +x $(Pipeline.Workspace)/drop/.terraform/providers/registry.terraform.io/hashicorp/azuread/2.39.0/linux_amd64/terraform-provider-azuread_v2.39.0_x5
-                - script: chmod +x $(Pipeline.Workspace)/drop/.terraform/providers/registry.terraform.io/microsoft/azuredevops/0.5.0/linux_amd64/terraform-provider-azuredevops_v0.5.0
+                    terraformVersion: '1.5.0'
+            
+                - script: chmod +x $(Pipeline.Workspace)/drop/*
+               
 
 
                 - task: TerraformTaskV4@4
