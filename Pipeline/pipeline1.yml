@@ -1,0 +1,102 @@
+
+trigger:
+- none
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: Plan
+    displayName: Init&Planning
+    jobs:
+      - job: 
+        steps:
+          - task: TerraformInstaller@1
+            displayName: Installing terraform
+            inputs:
+              terraformVersion: '1.5.0'
+          - task: DownloadSecureFile@1
+            name: projectJsonFile
+            inputs:
+              secureFile: 'project.json'
+          - task: DownloadSecureFile@1
+            name: variableFile
+            inputs:
+              secureFile: 'terraform.tfvars'
+            
+          - task: CopyFiles@2
+            inputs:
+              SourceFolder: '$(Agent.TempDirectory)'
+              Contents: |
+                terraform.tfvars 
+                project.json
+              TargetFolder: '$(system.defaultworkingdirectory)'
+          - task: TerraformTaskV4@4
+            displayName: Terraform init command
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              backendServiceArm: 'azure_service'
+              backendAzureRmResourceGroupName: 'rishabhpatel'
+              backendAzureRmStorageAccountName: 'tfstorageaccount12'
+              backendAzureRmContainerName: 'tf-container'
+              backendAzureRmKey: 'azure/terraform.tfstate'
+          - task: TerraformTaskV4@4
+            displayName: Terraform plan command
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              commandOptions: '-out="plan.out"'
+              environmentServiceNameAzureRM: 'azure_service'
+          - task: CopyFiles@2
+            inputs:
+              SourceFolder: '$(system.defaultworkingdirectory)'
+              Contents: '**'
+              TargetFolder: '$(build.artifactstagingdirectory)'
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
+  - stage: Deploying
+    displayName: Applying
+    dependsOn: Plan
+    jobs:
+      - deployment: Deploy
+        environment: dev
+        strategy:
+            runOnce:
+              deploy:
+                steps:
+                - task: TerraformInstaller@1
+                  inputs:
+                    terraformVersion: '1.5.0'
+            
+                - script: chmod -R +x $(Pipeline.Workspace)/drop/.terraform/providers/registry.terraform.io
+               
+                - task: TerraformTaskV4@4
+                  displayName: Terraform init command
+                  inputs:
+                    provider: 'azurerm'
+                    command: 'init'
+                    workingDirectory: '$(Pipeline.Workspace)/drop'
+                    backendServiceArm: 'azure_service'
+                    backendAzureRmResourceGroupName: 'rishabhpatel'
+                    backendAzureRmStorageAccountName: 'tfstorageaccount12'
+                    backendAzureRmContainerName: 'tf-container'
+                    backendAzureRmKey: 'azure/terraform.tfstate'
+                  
+                - task: TerraformTaskV4@4
+                  inputs:
+                    provider: 'azurerm'
+                    command: 'apply'
+                    workingDirectory: '$(Pipeline.Workspace)/drop'
+                    commandOptions: '"plan.out" '
+                    environmentServiceNameAzureRM: 'azure_service'
+                
+                
+                
+                
+          
+          
+   
