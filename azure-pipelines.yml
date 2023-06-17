@@ -29,7 +29,7 @@ stages:
               backendAzureRmResourceGroupName: 'rishabhpatel'
               backendAzureRmStorageAccountName: 'tfstorageaccount12'
               backendAzureRmContainerName: 'tf-container'
-              backendAzureRmKey: 'terraform.tfstate'
+              backendAzureRmKey: 'tf/terraform.tfstate'
           - task: TerraformTaskV4@4
             displayName: Terraform plan command
             inputs:
