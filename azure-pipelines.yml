@@ -27,7 +27,9 @@ stages:
           - task: CopyFiles@2
             inputs:
               SourceFolder: '$(Agent.TempDirectory)'
-              Contents: '**'
+              Contents: |
+                terraform.tfvars 
+                project.json
               TargetFolder: '$(system.defaultworkingdirectory)'
           - task: TerraformTaskV4@4
             displayName: Terraform init command
