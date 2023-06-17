@@ -24,7 +24,7 @@ stages:
               backendAzureRmResourceGroupName: 'rishabhpatel'
               backendAzureRmStorageAccountName: 'tfstorageaccount12'
               backendAzureRmContainerName: 'tf-container'
-              backendAzureRmKey: 'pf/terraform.tfstate'
+              backendAzureRmKey: 'azure/terraform.tfstate'
           - task: TerraformTaskV4@4
             displayName: Terraform plan command
             inputs:
@@ -68,7 +68,7 @@ stages:
                     backendAzureRmResourceGroupName: 'rishabhpatel'
                     backendAzureRmStorageAccountName: 'tfstorageaccount12'
                     backendAzureRmContainerName: 'tf-container'
-                    backendAzureRmKey: 'pf/terraform.tfstate'
+                    backendAzureRmKey: 'azure/terraform.tfstate'
                   
                 - task: TerraformTaskV4@4
                   inputs:
