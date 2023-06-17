@@ -1,0 +1,29 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+resources:
+  repositories:
+    - repository: repo
+      type: git
+      name: Terraform gitops/reusable
+trigger:
+- none
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - template: terraform-azdev.yml@repo
+    parameters:
+      ProjectJson: project.json
+      TerraformVars: terraform.tfvars
+      backendServiceArm: azure_service
+      backendAzureRmResourceGroupName: rishabhpatel
+      backendAzureRmStorageAccountName: tfstorageaccount12
+      backendAzureRmContainerName: tf-container
+      backendAzureRmKey: azure/terraform.tfstate
+      environmentServiceNameAzureRM: azure_service
+      environment: dev
+      
+    
