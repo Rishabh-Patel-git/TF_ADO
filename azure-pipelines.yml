@@ -37,7 +37,7 @@ stages:
               command: 'plan'
               commandOptions: '-out="plan.out"'
               environmentServiceNameAzureRM: 'azure_service'
-          - script: ls -al
+          - script: ls -al $(system.defaultworkingdirectory)/.terraform/providers/registry.terraform.io/hashicorp/azuread/2.39.0/linux_amd64/terraform-provider-azuread_v2.39.0_x5
           - task: CopyFiles@2
             inputs:
               SourceFolder: '$(system.defaultworkingdirectory)'
@@ -61,6 +61,7 @@ stages:
                 - task: TerraformInstaller@1
                   inputs:
                     terraformVersion: latest
+                - script: ls -al $(Pipeline.Workspace)/drop/.terraform/providers/registry.terraform.io/hashicorp/azuread/2.39.0/linux_amd64/terraform-provider-azuread_v2.39.0_x5
                 - script: chmod +x $(Pipeline.Workspace)/drop/.terraform/providers/registry.terraform.io/hashicorp/azuread/2.39.0/linux_amd64/terraform-provider-azuread_v2.39.0_x5
                 - script: chmod +x $(Pipeline.Workspace)/drop/.terraform/providers/registry.terraform.io/microsoft/azuredevops/0.5.0/linux_amd64/terraform-provider-azuredevops_v0.5.0
 
